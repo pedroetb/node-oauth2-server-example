@@ -1,10 +1,10 @@
 {
-  "name": "oauth2-server-example",
-  "version": "0.0.1",
+  "name": "node-oauth2-server-example",
+  "version": "1.0.0",
   "description": "Working oauth2 server with minimal configuration",
   "repository": {
     "type": "git",
-    "url": "https://github.com/pedroetb/oauth2-server-example"
+    "url": "https://github.com/pedroetb/node-oauth2-server-example"
   },
   "main": "app.js",
   "scripts": {
