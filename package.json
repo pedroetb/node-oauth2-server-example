@@ -1,0 +1,27 @@
+{
+  "name": "oauth2-server-example",
+  "version": "0.0.1",
+  "description": "Working oauth2 server with minimal configuration",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pedroetb/oauth2-server-example"
+  },
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "Pedro Trujillo",
+  "contributors": [
+    {
+      "name": "Pedro Trujillo",
+      "email": "pedroetb@gmail.com"
+    }
+  ],
+  "license": "ISC",
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "express": "^4.13.4",
+    "oauth2-server": "^2.4.1"
+  }
+}
