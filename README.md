@@ -28,7 +28,7 @@ To obtain a token you should POST to `http://localhost:3000/oauth/token`, includ
 
     * **Content-Type**: `application/x-www-form-urlencoded`
 * **Body**
-    * ´grant_type=password&username=pedroetb&password=password´
+    * `grant_type=password&username=pedroetb&password=password`
 
 If all goes as planned, you should receive a response like this:
 
