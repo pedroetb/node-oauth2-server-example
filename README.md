@@ -24,7 +24,7 @@ To obtain a token you should POST to `http://localhost:3000/oauth/token`, includ
 
 * **Headers**
     * **Authorization**: `"Basic " + clientId:secret base64'd`
-        * (for example, to use `application:secret`, you should send `Basic dGhvbTpuaWdodHdvcmxk`)
+        * (for example, to use `application:secret`, you should send `Basic YXBwbGljYXRpb246c2VjcmV0`)
 
     * **Content-Type**: `application/x-www-form-urlencoded`
 * **Body**
