@@ -1,6 +1,6 @@
 # node-oauth2-server example
 
-This is a basic example of a OAuth2 server, using [node-oauth2-server](https://github.com/thomseddon/node-oauth2-server/) with the minimum (only the required to work) model configuration.
+This is a basic example of a OAuth2 server, using [node-oauth2-server](https://github.com/oauthjs/node-oauth2-server) with the minimum (only the required to work) model configuration.
 
 ## Setup
 

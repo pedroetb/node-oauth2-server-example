@@ -3,17 +3,16 @@
  */
 
 var config = {
-    clients: [{
-        clientId: 'application',
-        clientSecret: 'secret',
-        redirectUris: ['']
-    }],
-    tokens: [],
-    users: [{
-        id: '123',
-        username: 'pedroetb',
-        password: 'password'
-    }]
+	clients: [{
+		clientId: 'application',
+		clientSecret: 'secret'
+	}],
+	tokens: [],
+	users: [{
+		id: '123',
+		username: 'pedroetb',
+		password: 'password'
+	}]
 };
 
 /**
@@ -21,9 +20,10 @@ var config = {
  */
 
 var dump = function() {
-    console.log('clients', config.clients);
-    console.log('tokens', config.tokens);
-    console.log('users', config.users);
+
+	console.log('clients', config.clients);
+	console.log('tokens', config.tokens);
+	console.log('users', config.users);
 };
 
 /*
@@ -32,11 +32,12 @@ var dump = function() {
 
 var getAccessToken = function(bearerToken, callback) {
 
-    var tokens = config.tokens.filter(function(token) {
-        return token.accessToken === bearerToken;
-    });
+	var tokens = config.tokens.filter(function(token) {
 
-    return callback(false, tokens[0]);
+		return token.accessToken === bearerToken;
+	});
+
+	return callback(false, tokens[0]);
 };
 
 /**
@@ -45,12 +46,12 @@ var getAccessToken = function(bearerToken, callback) {
 
 var getClient = function(clientId, clientSecret, callback) {
 
-    var clients = config.clients.filter(function(client) {
-        return client.clientId === clientId &&
-            client.clientSecret === clientSecret;
-    });
+	var clients = config.clients.filter(function(client) {
 
-    callback(false, clients[0]);
+		return client.clientId === clientId && client.clientSecret === clientSecret;
+	});
+
+	callback(false, clients[0]);
 };
 
 /**
@@ -59,7 +60,7 @@ var getClient = function(clientId, clientSecret, callback) {
 
 var grantTypeAllowed = function(clientId, grantType, callback) {
 
-    callback(false, grantType === "password");
+	callback(false, grantType === "password");
 };
 
 /**
@@ -67,16 +68,16 @@ var grantTypeAllowed = function(clientId, grantType, callback) {
  */
 
 var saveAccessToken = function(accessToken, clientId, expires,
-    user,callback) {
+	user,callback) {
 
-    config.tokens.push({
-        accessToken: accessToken,
-        expires: expires,
-        clientId: clientId,
-        user: user
-    });
+	config.tokens.push({
+		accessToken: accessToken,
+		expires: expires,
+		clientId: clientId,
+		user: user
+	});
 
-    callback(false);
+	callback(false);
 };
 
 /*
@@ -85,11 +86,12 @@ var saveAccessToken = function(accessToken, clientId, expires,
 
 var getUser = function(username, password, callback) {
 
-    var users = config.users.filter(function(user) {
-        return user.username === username && user.password === password;
-    });
+	var users = config.users.filter(function(user) {
 
-    callback(false, users[0]);
+		return user.username === username && user.password === password;
+	});
+
+	callback(false, users[0]);
 };
 
 /**
@@ -97,9 +99,9 @@ var getUser = function(username, password, callback) {
  */
 
 module.exports = {
-    getAccessToken: getAccessToken,
-    getClient: getClient,
-    grantTypeAllowed: grantTypeAllowed,
-    saveAccessToken: saveAccessToken,
-    getUser: getUser
+	getAccessToken: getAccessToken,
+	getClient: getClient,
+	grantTypeAllowed: grantTypeAllowed,
+	saveAccessToken: saveAccessToken,
+	getUser: getUser
 };
