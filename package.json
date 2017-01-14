@@ -1,6 +1,6 @@
 {
   "name": "node-oauth2-server-example",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Working oauth2 server with minimal configuration",
   "repository": {
     "type": "git",
