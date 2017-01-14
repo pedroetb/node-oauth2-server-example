@@ -7,6 +7,10 @@ var config = {
 		clientId: 'application',
 		clientSecret: 'secret'
 	}],
+	confidentialClients: [{
+		clientId: 'confidentialApplication',
+		clientSecret: 'topSecret'
+	}],
 	tokens: [],
 	users: [{
 		id: '123',
@@ -16,18 +20,19 @@ var config = {
 };
 
 /**
- * Dump the cache (for debug).
+ * Dump the memory storage content (for debug).
  */
 
 var dump = function() {
 
 	console.log('clients', config.clients);
+	console.log('confidentialClients', config.confidentialClients);
 	console.log('tokens', config.tokens);
 	console.log('users', config.users);
 };
 
 /*
- * Get access token.
+ * Methods used by all grant types.
  */
 
 var getAccessToken = function(bearerToken, callback) {
@@ -40,10 +45,6 @@ var getAccessToken = function(bearerToken, callback) {
 	return callback(false, tokens[0]);
 };
 
-/**
- * Get client.
- */
-
 var getClient = function(clientId, clientSecret, callback) {
 
 	var clients = config.clients.filter(function(client) {
@@ -51,24 +52,36 @@ var getClient = function(clientId, clientSecret, callback) {
 		return client.clientId === clientId && client.clientSecret === clientSecret;
 	});
 
-	callback(false, clients[0]);
-};
+	var confidentialClients = config.confidentialClients.filter(function(client) {
 
-/**
- * Grant type allowed.
- */
+		return client.clientId === clientId && client.clientSecret === clientSecret;
+	});
+
+	callback(false, clients[0] || confidentialClients[0]);
+};
 
 var grantTypeAllowed = function(clientId, grantType, callback) {
 
-	callback(false, grantType === "password");
+	var clientsSource,
+		clients = [];
+
+	if (grantType === 'password') {
+		clientsSource = config.clients;
+	} else if (grantType === 'client_credentials') {
+		clientsSource = config.confidentialClients;
+	}
+
+	if (!!clientsSource) {
+		clients = clientsSource.filter(function(client) {
+
+			return client.clientId === clientId;
+		});
+	}
+
+	callback(false, clients.length);
 };
 
-/**
- * Save token.
- */
-
-var saveAccessToken = function(accessToken, clientId, expires,
-	user,callback) {
+var saveAccessToken = function(accessToken, clientId, expires, user, callback) {
 
 	config.tokens.push({
 		accessToken: accessToken,
@@ -81,7 +94,7 @@ var saveAccessToken = function(accessToken, clientId, expires,
 };
 
 /*
- * Get user.
+ * Method used only by password grant type.
  */
 
 var getUser = function(username, password, callback) {
@@ -94,6 +107,28 @@ var getUser = function(username, password, callback) {
 	callback(false, users[0]);
 };
 
+/*
+ * Method used only by client_credentials grant type.
+ */
+
+var getUserFromClient = function(clientId, clientSecret, callback) {
+
+	var clients = config.confidentialClients.filter(function(client) {
+
+		return client.clientId === clientId && client.clientSecret === clientSecret;
+	});
+
+	var user;
+
+	if (clients.length) {
+		user = {
+			username: clientId
+		};
+	}
+
+	callback(false, user);
+};
+
 /**
  * Export model definition object.
  */
@@ -103,5 +138,6 @@ module.exports = {
 	getClient: getClient,
 	grantTypeAllowed: grantTypeAllowed,
 	saveAccessToken: saveAccessToken,
-	getUser: getUser
+	getUser: getUser,
+	getUserFromClient: getUserFromClient
 };

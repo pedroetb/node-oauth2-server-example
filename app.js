@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 
 app.oauth = oauthserver({
 	model: require('./model.js'),
-	grants: ['password'],
+	grants: ['password', 'client_credentials'],
 	debug: true
 });
 
