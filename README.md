@@ -50,6 +50,7 @@ You need to include the client credentials in request headers and the user crede
 	* **Content-Type**: `application/x-www-form-urlencoded`
 * **Body**
 	* `grant_type=password&username=pedroetb&password=password`
+		* (contains 3 parameters: `grant_type`, `username` and `password`)
 
 #### With *client_credentials* grant
 
