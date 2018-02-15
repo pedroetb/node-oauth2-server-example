@@ -52,6 +52,16 @@ You need to include the client credentials in request headers and the user crede
 	* `grant_type=password&username=pedroetb&password=password`
 		* (contains 3 parameters: `grant_type`, `username` and `password`)
 
+For example, using `curl`:
+```
+curl http://localhost:3000/oauth/token \
+  -d "grant_type=password" \
+  -d "username=pedroetb" \
+  -d "password=password" \
+  -H "Authorization: Basic YXBwbGljYXRpb246c2VjcmV0" \
+  -H "Content-Type: application/x-www-form-urlencoded"
+```
+
 #### With *client_credentials* grant
 
 You need to include the client credentials in request headers and the grant type in request body:
@@ -63,6 +73,14 @@ You need to include the client credentials in request headers and the grant type
 	* **Content-Type**: `application/x-www-form-urlencoded`
 * **Body**
 	* `grant_type=client_credentials`
+
+For example, using `curl`:
+```
+curl http://localhost:3000/oauth/token \
+  -d "grant_type=client_credentials" \
+  -H "Authorization: Basic Y29uZmlkZW50aWFsQXBwbGljYXRpb246dG9wU2VjcmV0" \
+  -H "Content-Type: application/x-www-form-urlencoded"
+```
 
 If all goes as planned, you should receive a response like this:
 
@@ -81,3 +99,9 @@ Now, you can use your brand-new token to access restricted areas. For example, y
 * **Headers**
 	* **Authorization**: `"Bearer " + access_token`
 		* (for example, `Bearer 72ab415822b56cf0f9f93f07fe978d9aae859325`)
+
+For example, using `curl`:
+```
+curl http://localhost:3000 \
+  -H "Authorization: Bearer 72ab415822b56cf0f9f93f07fe978d9aae859325"
+```
