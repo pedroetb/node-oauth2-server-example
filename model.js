@@ -9,7 +9,11 @@ var config = {
 	}],
 	confidentialClients: [{
 		clientId: 'confidentialApplication',
-		clientSecret: 'topSecret'
+		clientSecret: 'topSecret',
+		grants: [
+			'client_credentials'
+		],
+		redirectUris: []
 	}],
 	tokens: [],
 	users: [{
@@ -23,7 +27,7 @@ var config = {
  * Dump the memory storage content (for debug).
  */
 
-var dump = function() {
+var dump = function () {
 
 	console.log('clients', config.clients);
 	console.log('confidentialClients', config.confidentialClients);
@@ -35,98 +39,68 @@ var dump = function() {
  * Methods used by all grant types.
  */
 
-var getAccessToken = function(bearerToken, callback) {
-
-	var tokens = config.tokens.filter(function(token) {
-
-		return token.accessToken === bearerToken;
+var getAccessToken = function (token) {
+	var tokens = config.tokens.filter(function (savedToken) {
+		if(savedToken.accessToken === token)
+			return savedToken;
 	});
 
-	return callback(false, tokens[0]);
+	return tokens[0] || null;
 };
 
-var getClient = function(clientId, clientSecret, callback) {
-
-	var clients = config.clients.filter(function(client) {
-
-		return client.clientId === clientId && client.clientSecret === clientSecret;
+var getClient = function (clientId, clientSecret) {
+	var clients = config.clients.filter(function (client) {
+		if (client.clientId === clientId && client.clientSecret === clientSecret) {
+			return client;
+		}
 	});
 
-	var confidentialClients = config.confidentialClients.filter(function(client) {
-
-		return client.clientId === clientId && client.clientSecret === clientSecret;
+	var confidentialClients = config.confidentialClients.filter(function (client) {
+		if (client.clientId === clientId && client.clientSecret === clientSecret) {
+			return client;
+		}
 	});
 
-	callback(false, clients[0] || confidentialClients[0]);
+	return clients[0] || confidentialClients[0];
 };
 
-var grantTypeAllowed = function(clientId, grantType, callback) {
-
-	var clientsSource,
-		clients = [];
-
-	if (grantType === 'password') {
-		clientsSource = config.clients;
-	} else if (grantType === 'client_credentials') {
-		clientsSource = config.confidentialClients;
-	}
-
-	if (!!clientsSource) {
-		clients = clientsSource.filter(function(client) {
-
-			return client.clientId === clientId;
-		});
-	}
-
-	callback(false, clients.length);
-};
-
-var saveAccessToken = function(accessToken, clientId, expires, user, callback) {
-
-	config.tokens.push({
-		accessToken: accessToken,
-		expires: expires,
-		clientId: clientId,
+var saveToken = function (token, client, user) {
+	var data = {
+		accessToken: token.accessToken,
+		accessTokenExpiresAt: token.accessTokenExpiresAt,
+		client: client,
+		clientId: client.clientId,
+		refreshToken: token.refreshToken,
+		refreshTokenExpiresAt: token.refreshTokenExpiresAt,
 		user: user
-	});
+	};
 
-	callback(false);
+	config.tokens.push(data);
+	return data;
 };
 
 /*
  * Method used only by password grant type.
  */
 
-var getUser = function(username, password, callback) {
-
-	var users = config.users.filter(function(user) {
-
+var getUser = function (username, password) {
+	var users = config.users.filter(function (user) {
 		return user.username === username && user.password === password;
 	});
 
-	callback(false, users[0]);
+	return users[0] || null;
 };
 
 /*
  * Method used only by client_credentials grant type.
  */
 
-var getUserFromClient = function(clientId, clientSecret, callback) {
-
-	var clients = config.confidentialClients.filter(function(client) {
-
-		return client.clientId === clientId && client.clientSecret === clientSecret;
+var getUserFromClient = function (client) {
+	var clients = config.confidentialClients.filter(function (confidentialClient) {
+		return confidentialClient.clientId === client.clientId && confidentialClient.clientSecret === client.clientSecret;
 	});
 
-	var user;
-
-	if (clients.length) {
-		user = {
-			username: clientId
-		};
-	}
-
-	callback(false, user);
+	return clients[0];
 };
 
 /**
@@ -136,8 +110,7 @@ var getUserFromClient = function(clientId, clientSecret, callback) {
 module.exports = {
 	getAccessToken: getAccessToken,
 	getClient: getClient,
-	grantTypeAllowed: grantTypeAllowed,
-	saveAccessToken: saveAccessToken,
+	saveToken: saveToken,
 	getUser: getUser,
 	getUserFromClient: getUserFromClient
 };
