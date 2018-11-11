@@ -1,6 +1,6 @@
 # node-oauth2-server example
 
-This is a basic example of a OAuth2 server, using [node-oauth2-server](https://github.com/oauthjs/node-oauth2-server) ^3.0.0-b2 with the minimum (only the required to work) model configuration.
+This is a basic example of a OAuth2 server, using [node-oauth2-server](https://github.com/oauthjs/node-oauth2-server) (version 3.0.1) with the minimum (only the required to work) model configuration.
 
 If you want an example with a better data management system, you should go to [node-oauth2-server-mongo-example](https://github.com/pedroetb/node-oauth2-server-mongo-example) instead.
 
@@ -86,8 +86,22 @@ If all goes as planned, you should receive a response like this:
 
 ```
 {
-	"accessToken": "72ab415822b56cf0f9f93f07fe978d9aae859325",
-	"accessTokenExpiresAt": "2018-11-10T08:39:37.967Z"
+	"accessToken": "374ec0d66273c2694e08b20aa05d72df9633ccdd",
+	"accessTokenExpiresAt": "2018-11-11T01:10:58.926Z",
+	"refreshToken": "5b91c14d9a18ed300baf31c5cf5ed55c3921873c",
+	"refreshTokenExpiresAt": "2018-11-25T00:10:58.926Z",
+	"client": {
+		"clientId": "application",
+		"clientSecret": "secret",
+		"grants": [
+			"password"
+		],
+		"redirectUris": []
+	},
+	"user": {
+		"username": "pedroetb",
+		"password": "password"
+	}
 }
 ```
 

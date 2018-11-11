@@ -5,19 +5,23 @@
 var config = {
 	clients: [{
 		clientId: 'application',
-		clientSecret: 'secret'
+		clientSecret: 'secret',
+		grants: [
+			'password'
+		],
+		redirectUris: []
 	}],
 	confidentialClients: [{
 		clientId: 'confidentialApplication',
 		clientSecret: 'topSecret',
 		grants: [
+			'password',
 			'client_credentials'
 		],
 		redirectUris: []
 	}],
 	tokens: [],
 	users: [{
-		id: '123',
 		username: 'pedroetb',
 		password: 'password'
 	}]
@@ -27,7 +31,7 @@ var config = {
  * Dump the memory storage content (for debug).
  */
 
-var dump = function () {
+var dump = function() {
 
 	console.log('clients', config.clients);
 	console.log('confidentialClients', config.confidentialClients);
@@ -39,43 +43,44 @@ var dump = function () {
  * Methods used by all grant types.
  */
 
-var getAccessToken = function (token) {
-	var tokens = config.tokens.filter(function (savedToken) {
-		if(savedToken.accessToken === token)
-			return savedToken;
+var getAccessToken = function(token) {
+
+	var tokens = config.tokens.filter(function(savedToken) {
+
+		return savedToken.accessToken === token;
 	});
 
-	return tokens[0] || null;
+	return tokens[0];
 };
 
-var getClient = function (clientId, clientSecret) {
-	var clients = config.clients.filter(function (client) {
-		if (client.clientId === clientId && client.clientSecret === clientSecret) {
-			return client;
-		}
+var getClient = function(clientId, clientSecret) {
+
+	var clients = config.clients.filter(function(client) {
+
+		return client.clientId === clientId && client.clientSecret === clientSecret;
 	});
 
-	var confidentialClients = config.confidentialClients.filter(function (client) {
-		if (client.clientId === clientId && client.clientSecret === clientSecret) {
-			return client;
-		}
+	var confidentialClients = config.confidentialClients.filter(function(client) {
+
+		return client.clientId === clientId && client.clientSecret === clientSecret;
 	});
 
 	return clients[0] || confidentialClients[0];
 };
 
-var saveToken = function (token, client, user) {
+var saveToken = function(token, client, user) {
+
 	var data = {
 		accessToken: token.accessToken,
 		accessTokenExpiresAt: token.accessTokenExpiresAt,
-		client: client,
-		clientId: client.clientId,
 		refreshToken: token.refreshToken,
 		refreshTokenExpiresAt: token.refreshTokenExpiresAt,
+		client: client,
 		user: user
 	};
 
 	config.tokens.push(data);
+
 	return data;
 };
 
@@ -83,21 +88,25 @@ var saveToken = function (token, client, user) {
  * Method used only by password grant type.
  */
 
-var getUser = function (username, password) {
-	var users = config.users.filter(function (user) {
+var getUser = function(username, password) {
+
+	var users = config.users.filter(function(user) {
+
 		return user.username === username && user.password === password;
 	});
 
-	return users[0] || null;
+	return users[0];
 };
 
 /*
  * Method used only by client_credentials grant type.
  */
 
-var getUserFromClient = function (client) {
-	var clients = config.confidentialClients.filter(function (confidentialClient) {
-		return confidentialClient.clientId === client.clientId && confidentialClient.clientSecret === client.clientSecret;
+var getUserFromClient = function(client) {
+
+	var clients = config.confidentialClients.filter(function(savedClient) {
+
+		return savedClient.clientId === client.clientId && savedClient.clientSecret === client.clientSecret;
 	});
 
 	return clients[0];
