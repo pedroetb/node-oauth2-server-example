@@ -1,6 +1,6 @@
 # node-oauth2-server example
 
-This is a basic example of a OAuth2 server, using [node-oauth2-server](https://github.com/oauthjs/node-oauth2-server) with the minimum (only the required to work) model configuration.
+This is a basic example of a OAuth2 server, using [node-oauth2-server](https://github.com/oauthjs/node-oauth2-server) ^3.0.0-b2 with the minimum (only the required to work) model configuration.
 
 If you want an example with a better data management system, you should go to [node-oauth2-server-mongo-example](https://github.com/pedroetb/node-oauth2-server-mongo-example) instead.
 
@@ -86,9 +86,8 @@ If all goes as planned, you should receive a response like this:
 
 ```
 {
-	"token_type": "bearer",
-	"access_token": "72ab415822b56cf0f9f93f07fe978d9aae859325",
-	"expires_in": 3600
+	"accessToken": "72ab415822b56cf0f9f93f07fe978d9aae859325",
+	"accessTokenExpiresAt": "2018-11-10T08:39:37.967Z"
 }
 ```
 
