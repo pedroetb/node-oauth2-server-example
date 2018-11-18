@@ -55,11 +55,28 @@ You need to include the client credentials in request headers and the user crede
 For example, using `curl`:
 ```
 curl http://localhost:3000/oauth/token \
-  -d "grant_type=password" \
-  -d "username=pedroetb" \
-  -d "password=password" \
-  -H "Authorization: Basic YXBwbGljYXRpb246c2VjcmV0" \
-  -H "Content-Type: application/x-www-form-urlencoded"
+	-d "grant_type=password" \
+	-d "username=pedroetb" \
+	-d "password=password" \
+	-H "Authorization: Basic YXBwbGljYXRpb246c2VjcmV0" \
+	-H "Content-Type: application/x-www-form-urlencoded"
+```
+
+If all goes as planned, you should receive a response like this:
+
+```
+{
+	"accessToken": "951d6f603c2ce322c5def00ce58952ed2d096a72",
+	"accessTokenExpiresAt": "2018-11-18T16:18:25.852Z",
+	"refreshToken": "67c8300ad53efa493c2278acf12d92bdb71832f9",
+	"refreshTokenExpiresAt": "2018-12-02T15:18:25.852Z",
+	"client": {
+		"id": "application"
+	},
+	"user": {
+		"id": "pedroetb"
+	}
+}
 ```
 
 #### With *client_credentials* grant
@@ -77,30 +94,22 @@ You need to include the client credentials in request headers and the grant type
 For example, using `curl`:
 ```
 curl http://localhost:3000/oauth/token \
-  -d "grant_type=client_credentials" \
-  -H "Authorization: Basic Y29uZmlkZW50aWFsQXBwbGljYXRpb246dG9wU2VjcmV0" \
-  -H "Content-Type: application/x-www-form-urlencoded"
+	-d "grant_type=client_credentials" \
+	-H "Authorization: Basic Y29uZmlkZW50aWFsQXBwbGljYXRpb246dG9wU2VjcmV0" \
+	-H "Content-Type: application/x-www-form-urlencoded"
 ```
 
 If all goes as planned, you should receive a response like this:
 
 ```
 {
-	"accessToken": "374ec0d66273c2694e08b20aa05d72df9633ccdd",
-	"accessTokenExpiresAt": "2018-11-11T01:10:58.926Z",
-	"refreshToken": "5b91c14d9a18ed300baf31c5cf5ed55c3921873c",
-	"refreshTokenExpiresAt": "2018-11-25T00:10:58.926Z",
+	"accessToken": "951d6f603c2ce322c5def00ce58952ed2d096a72",
+	"accessTokenExpiresAt": "2018-11-18T16:18:25.852Z",
 	"client": {
-		"clientId": "application",
-		"clientSecret": "secret",
-		"grants": [
-			"password"
-		],
-		"redirectUris": []
+		"id": "confidentialApplication"
 	},
 	"user": {
-		"username": "pedroetb",
-		"password": "password"
+		"id": "confidentialApplication"
 	}
 }
 ```
@@ -111,10 +120,10 @@ Now, you can use your brand-new token to access restricted areas. For example, y
 
 * **Headers**
 	* **Authorization**: `"Bearer " + access_token`
-		* (for example, `Bearer 72ab415822b56cf0f9f93f07fe978d9aae859325`)
+		* (for example, `Bearer 951d6f603c2ce322c5def00ce58952ed2d096a72`)
 
 For example, using `curl`:
 ```
 curl http://localhost:3000 \
-  -H "Authorization: Bearer 72ab415822b56cf0f9f93f07fe978d9aae859325"
+	-H "Authorization: Bearer 951d6f603c2ce322c5def00ce58952ed2d096a72"
 ```

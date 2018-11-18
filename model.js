@@ -70,18 +70,17 @@ var getClient = function(clientId, clientSecret) {
 
 var saveToken = function(token, client, user) {
 
-	var data = {
-		accessToken: token.accessToken,
-		accessTokenExpiresAt: token.accessTokenExpiresAt,
-		refreshToken: token.refreshToken,
-		refreshTokenExpiresAt: token.refreshTokenExpiresAt,
-		client: client,
-		user: user
+	token.client = {
+		id: client.clientId
 	};
 
-	config.tokens.push(data);
+	token.user = {
+		id: user.username || user.clientId
+	};
 
-	return data;
+	config.tokens.push(token);
+
+	return token;
 };
 
 /*
