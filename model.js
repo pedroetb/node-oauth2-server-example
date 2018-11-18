@@ -4,10 +4,12 @@
 
 var config = {
 	clients: [{
+		id: 'application',	// TODO: Needed by refresh_token grant, because there is a bug at line 103 in https://github.com/oauthjs/node-oauth2-server/blob/v3.0.1/lib/grant-types/refresh-token-grant-type.js (used client.id instead of client.clientId)
 		clientId: 'application',
 		clientSecret: 'secret',
 		grants: [
-			'password'
+			'password',
+			'refresh_token'
 		],
 		redirectUris: []
 	}],
@@ -111,6 +113,42 @@ var getUserFromClient = function(client) {
 	return clients[0];
 };
 
+/*
+ * Methods used only by refresh_token grant type.
+ */
+
+var getRefreshToken = function(refreshToken) {
+
+	var tokens = config.tokens.filter(function(savedToken) {
+
+		return savedToken.refreshToken === refreshToken;
+	});
+
+	if (!tokens.length) {
+		return;
+	}
+
+	var token = Object.assign({}, tokens[0]);
+	token.user.username = token.user.id;
+
+	return token;
+};
+
+var revokeToken = function(token) {
+
+	config.tokens = config.tokens.filter(function(savedToken) {
+
+		return savedToken.refreshToken !== token.refreshToken;
+	});
+
+	var revokedTokensFound = config.tokens.filter(function(savedToken) {
+
+		return savedToken.refreshToken === token.refreshToken;
+	});
+
+	return !revokedTokensFound.length;
+};
+
 /**
  * Export model definition object.
  */
@@ -120,5 +158,7 @@ module.exports = {
 	getClient: getClient,
 	saveToken: saveToken,
 	getUser: getUser,
-	getUserFromClient: getUserFromClient
+	getUserFromClient: getUserFromClient,
+	getRefreshToken: getRefreshToken,
+	revokeToken: revokeToken
 };
