@@ -77,7 +77,7 @@ var saveToken = function(token, client, user) {
 	};
 
 	token.user = {
-		id: user.username || user.clientId
+		username: user.username
 	};
 
 	config.tokens.push(token);
@@ -110,7 +110,7 @@ var getUserFromClient = function(client) {
 		return savedClient.clientId === client.clientId && savedClient.clientSecret === client.clientSecret;
 	});
 
-	return clients[0];
+	return clients.length;
 };
 
 /*
@@ -128,10 +128,7 @@ var getRefreshToken = function(refreshToken) {
 		return;
 	}
 
-	var token = Object.assign({}, tokens[0]);
-	token.user.username = token.user.id;
-
-	return token;
+	return tokens[0];
 };
 
 var revokeToken = function(token) {
